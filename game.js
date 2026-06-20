@@ -53,17 +53,6 @@
         localStorage.setItem(STORAGE_KEY, String(val));
     }
 
-    function calcSpeedMultiplier() {
-        var destroyed = state.destroyedCount;
-        var mult = 1;
-        if (destroyed >= SPEED_UP_2) {
-            mult = 1.44;
-        } else if (destroyed >= SPEED_UP_1) {
-            mult = 1.2;
-        }
-        return mult;
-    }
-
     function resetBall() {
         state.ball = {
             x: W / 2,
@@ -101,6 +90,9 @@
         state.paused = false;
         state.gameOver = false;
         state.gameWon = false;
+        state.speedUp1Done = false;
+        state.speedUp2Done = false;
+        state.speedMult = 1;
 
         state.paddle = {
             x: (W - PADDLE_W) / 2,
@@ -125,8 +117,7 @@
     function launchBall() {
         if (state.ballStuck) {
             state.ballStuck = false;
-            var mult = calcSpeedMultiplier();
-            var speed = BASE_SPEED * mult;
+            var speed = BASE_SPEED * state.speedMult;
             var angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.6;
             state.ball.dx = Math.cos(angle) * speed;
             state.ball.dy = Math.sin(angle) * speed;
@@ -143,15 +134,6 @@
             b.x = p.x + p.w / 2;
             b.y = PADDLE_Y - b.r - 2;
             return;
-        }
-
-        var mult = calcSpeedMultiplier();
-        var desiredSpeed = BASE_SPEED * mult;
-        var currentSpeed = Math.sqrt(b.dx * b.dx + b.dy * b.dy);
-        if (currentSpeed > 0) {
-            var ratio = desiredSpeed / currentSpeed;
-            b.dx *= ratio;
-            b.dy *= ratio;
         }
 
         b.x += b.dx;
@@ -213,6 +195,19 @@
                 state.score += br.score;
                 state.destroyedCount++;
                 updateHUD();
+
+                if (!state.speedUp1Done && state.destroyedCount >= SPEED_UP_1) {
+                    state.speedUp1Done = true;
+                    state.speedMult *= 1.2;
+                    state.ball.dx *= 1.2;
+                    state.ball.dy *= 1.2;
+                }
+                if (!state.speedUp2Done && state.destroyedCount >= SPEED_UP_2) {
+                    state.speedUp2Done = true;
+                    state.speedMult *= 1.2;
+                    state.ball.dx *= 1.2;
+                    state.ball.dy *= 1.2;
+                }
 
                 var overlapLeft = (b.x + b.r) - br.x;
                 var overlapRight = (br.x + br.w) - (b.x - b.r);
