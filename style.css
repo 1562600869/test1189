@@ -1,0 +1,93 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #1a1a2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    color: #eee;
+    user-select: none;
+}
+
+#game-container {
+    position: relative;
+}
+
+#hud {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 4px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+#hud span {
+    min-width: 120px;
+}
+
+#hud span:last-child {
+    text-align: right;
+}
+
+#gameCanvas {
+    display: block;
+    background: #0f0f23;
+    border: 2px solid #333366;
+    border-radius: 4px;
+    cursor: none;
+}
+
+#overlay,
+#pause-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 4px;
+    z-index: 10;
+}
+
+#overlay-content,
+#pause-content {
+    text-align: center;
+}
+
+#overlay-content h2,
+#pause-content h2 {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+#overlay-content p,
+#pause-content p {
+    font-size: 18px;
+    margin: 6px 0;
+    color: #ccc;
+}
+
+#overlay-record {
+    color: #ffd700 !important;
+    font-weight: 700;
+}
+
+#overlay-hint {
+    margin-top: 20px;
+    color: #888 !important;
+    font-size: 14px !important;
+}
+
+.hidden {
+    display: none !important;
+}
